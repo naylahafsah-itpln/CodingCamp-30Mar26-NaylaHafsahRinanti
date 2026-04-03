@@ -1,0 +1,163 @@
+/* Base Styles */
+:root {
+    --primary-blue: #3498db;
+    --danger-red: #e74c3c;
+    --bg-gray: #f8f9fa;
+    --white: #ffffff;
+    --text-dark: #333;
+    --border-color: #eee;
+}
+
+body {
+    background-color: var(--bg-gray);
+    color: var(--text-dark);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 900px;
+}
+
+header h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Card Component [cite: 59, 69] */
+.card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+}
+
+.card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Total Balance Section [cite: 34, 35] */
+.balance-card {
+    text-align: center;
+}
+
+.balance-card .label {
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.balance-card h2 {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin: 0;
+}
+
+/* Form Styling [cite: 24, 25] */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* Agar padding tidak merusak lebar */
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Layout Grid for List and Chart [cite: 42] */
+.dashboard-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Responsive: Tumpuk di layar kecil [cite: 66] */
+}
+
+.list-card, .chart-card {
+    flex: 1;
+    min-width: 350px;
+}
+
+/* Transaction List [cite: 30, 31] */
+.scrollable-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+.item-info b {
+    display: block;
+    font-size: 1rem;
+}
+
+.item-info .amount {
+    color: var(--primary-blue);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    background: #f0f0f0;
+    border-radius: 4px;
+    color: #777;
+    margin-top: 4px;
+}
+
+.btn-delete {
+    background: var(--danger-red);
+    color: var(--white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Chart Container [cite: 37] */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
