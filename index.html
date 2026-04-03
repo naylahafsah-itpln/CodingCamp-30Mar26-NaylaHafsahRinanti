@@ -9,8 +9,9 @@
 </head>
 <body>
     <div class="app-container">
-        <header>
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>Expense & Budget Visualizer</h1>
+            <button id="theme-toggle" class="btn-theme">🌙 Mode</button>
         </header>
 
         <div class="card balance-card">
@@ -31,11 +32,16 @@
                 </div>
                 <div class="form-group">
                     <label>Category</label>
-                    <select id="category" required>
+                    <select id="category" required onchange="checkNewCategory(this)">
                         <option value="Food">Food</option>
                         <option value="Transport">Transport</option>
                         <option value="Fun">Fun</option>
+                        <option value="custom">+ Add New Category...</option>
                     </select>
+                </div>
+                <div id="new-category-input" style="display:none; margin-bottom: 15px;">
+                    <label>New Category Name</label>
+                    <input type="text" id="custom-cat-name" placeholder="Name your category">
                 </div>
                 <button type="submit" class="btn-submit">Add Transaction</button>
             </form>
@@ -43,7 +49,13 @@
 
         <div class="dashboard-grid">
             <div class="card list-card">
-                <h3>Transactions</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    <h3 style="margin: 0; border: none;">Transactions</h3>
+                    <select id="sort-by" onchange="updateUI()" style="width: auto; padding: 5px;">
+                        <option value="newest">Newest</option>
+                        <option value="highest">Highest Amount</option>
+                    </select>
+                </div>
                 <div id="transaction-list" class="scrollable-list"></div>
             </div>
             <div class="card chart-card">

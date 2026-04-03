@@ -1,92 +1,106 @@
-// 1. Inisialisasi Data dari Local Storage (TC-2)
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let expenseChart;
 
-// 2. Seleksi Elemen DOM
 const transactionForm = document.getElementById('transaction-form');
 const transactionList = document.getElementById('transaction-list');
 const totalBalance = document.getElementById('total-balance');
 
-// 3. Fungsi untuk Update Antarmuka (UI)
+// Toggle Dark Mode
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    const isDark = document.body.classList.contains('dark-theme');
+    document.getElementById('theme-toggle').innerText = isDark ? '☀️ Light' : '🌙 Dark';
+});
+
+// input kategori baru kalau pilih 'custom'
+window.checkNewCategory = function(select) {
+    const customInput = document.getElementById('new-category-input');
+    customInput.style.display = select.value === 'custom' ? 'block' : 'none';
+};
+
 function updateUI() {
-    // Kosongkan list sebelum render ulang
     transactionList.innerHTML = '';
+    const sortBy = document.getElementById('sort-by').value;
     
+    // Fitur Sorting
+    let displayData = [...transactions];
+    if (sortBy === 'highest') {
+        displayData.sort((a, b) => b.amount - a.amount);
+    } else {
+        // (default)
+        displayData.reverse(); 
+    }
+
     let total = 0;
-    const categoryTotals = { Food: 0, Transport: 0, Fun: 0 };
+    const categoryTotals = {};
 
-    transactions.forEach((item, index) => {
-        // Hitung Total Balance (MVP)
-        total += parseFloat(item.amount);
+    displayData.forEach((item) => {
+        const amount = parseFloat(item.amount);
+        total += amount;
         
-        // Hitung per kategori untuk Chart (MVP)
-        if (categoryTotals.hasOwnProperty(item.category)) {
-            categoryTotals[item.category] += parseFloat(item.amount);
-        }
+        // custom category
+        categoryTotals[item.category] = (categoryTotals[item.category] || 0) + amount;
 
-        // Render Baris Transaksi
         const row = document.createElement('div');
         row.className = 'item-row';
         row.innerHTML = `
             <div class="item-info">
                 <b>${item.name}</b>
-                <span class="amount">$${parseFloat(item.amount).toFixed(2)}</span><br>
+                <span class="amount">$${amount.toFixed(2)}</span><br>
                 <span class="category-badge">${item.category}</span>
             </div>
-            <button class="btn-delete" onclick="deleteTransaction(${index})">Delete</button>
+            <button class="btn-delete" onclick="deleteTransaction(${transactions.indexOf(item)})">Delete</button>
         `;
         transactionList.appendChild(row);
     });
 
-    // Update Tampilan Saldo (MVP)
     totalBalance.innerText = `$${total.toFixed(2)}`;
-
-    // Simpan ke Local Storage (TC-2)
     localStorage.setItem('transactions', JSON.stringify(transactions));
-
-    // Update Grafik (MVP)
     renderChart(categoryTotals);
 }
 
-// 4. Fungsi Tambah Transaksi (MVP)
 transactionForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const name = document.getElementById('item-name').value;
     const amount = document.getElementById('amount').value;
-    const category = document.getElementById('category').value;
+    let category = document.getElementById('category').value;
 
-    // Validasi Form (MVP)
     if (name.trim() === '' || amount <= 0) {
-        alert("Please fill all fields with valid data!");
+        alert("Data nggak valid!");
         return;
     }
 
-    const newTransaction = {
-        name,
-        amount: parseFloat(amount),
-        category
-    };
+    // Logika Custom Category
+    if (category === 'custom') {
+        const customName = document.getElementById('custom-cat-name').value;
+        if (!customName) {
+            alert("Isi nama kategori barunya!");
+            return;
+        }
+        category = customName;
+        
+        // Tambah ke dropdown biar bisa dipilih lagi nanti
+        const select = document.getElementById('category');
+        const newOption = new Option(customName, customName);
+        select.add(newOption, select.options[select.options.length - 1]);
+    }
 
-    transactions.push(newTransaction);
-    updateUI();
+    transactions.push({ name, amount: parseFloat(amount), category });
+    
+    document.getElementById('new-category-input').style.display = 'none';
     transactionForm.reset();
+    updateUI();
 });
 
-// 5. Fungsi Hapus Transaksi (MVP)
 window.deleteTransaction = function(index) {
     transactions.splice(index, 1);
     updateUI();
 };
 
-// 6. Fungsi Render Grafik (Chart.js)
 function renderChart(data) {
     const ctx = document.getElementById('expenseChart').getContext('2d');
-    
-    // Hapus chart lama sebelum membuat yang baru agar tidak tumpang tindih
-    if (expenseChart) {
-        expenseChart.destroy();
-    }
+    if (expenseChart) expenseChart.destroy();
 
     expenseChart = new Chart(ctx, {
         type: 'pie',
@@ -94,19 +108,16 @@ function renderChart(data) {
             labels: Object.keys(data),
             datasets: [{
                 data: Object.values(data),
-                backgroundColor: ['#2ecc71', '#3498db', '#e67e22'], // Hijau (Food), Biru (Transport), Oranye (Fun)
+                backgroundColor: ['#2ecc71', '#3498db', '#e67e22', '#9b59b6', '#f1c40f', '#e74c3c'],
                 borderWidth: 1
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom' }
-            }
+            plugins: { legend: { position: 'bottom' } }
         }
     });
 }
 
-// Jalankan UI pertama kali saat halaman dimuat
 updateUI();

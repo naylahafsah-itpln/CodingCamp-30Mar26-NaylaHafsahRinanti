@@ -6,6 +6,16 @@
     --white: #ffffff;
     --text-dark: #333;
     --border-color: #eee;
+    --card-bg: #ffffff;
+}
+
+/* Dark Mode Variables */
+body.dark-theme {
+    --bg-gray: #121212;
+    --text-dark: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --white: #1e1e1e;
 }
 
 body {
@@ -16,6 +26,7 @@ body {
     padding: 20px;
     display: flex;
     justify-content: center;
+    transition: background 0.3s ease;
 }
 
 .app-container {
@@ -23,15 +34,25 @@ body {
     max-width: 900px;
 }
 
-header h1 {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+/* Theme Toggle Button */
+.btn-theme {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s;
 }
 
-/* Card Component [cite: 59, 69] */
+.btn-theme:active {
+    transform: scale(0.95);
+}
+
+/* Card Component */
 .card {
-    background: var(--white);
+    background: var(--card-bg);
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 20px;
@@ -42,22 +63,9 @@ header h1 {
 .card h3 {
     margin-top: 0;
     font-size: 1.1rem;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
     margin-bottom: 20px;
-}
-
-/* Total Balance Section [cite: 34, 35] */
-.balance-card {
-    text-align: center;
-}
-
-.balance-card .label {
-    font-size: 0.8rem;
-    color: #888;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-    text-transform: uppercase;
 }
 
 .balance-card h2 {
@@ -66,44 +74,38 @@ header h1 {
     margin: 0;
 }
 
-/* Form Styling [cite: 24, 25] */
+/* Form & Input Styling */
 .form-group {
     margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
-    font-weight: 600;
 }
 
 input, select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    box-sizing: border-box; /* Agar padding tidak merusak lebar */
+    background-color: var(--card-bg);
+    color: var(--text-dark);
+    box-sizing: border-box;
 }
 
 .btn-submit {
     width: 100%;
     padding: 12px;
     background-color: var(--primary-blue);
-    color: var(--white);
+    color: white;
     border: none;
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
     font-size: 1rem;
-    margin-top: 10px;
 }
 
-/* Layout Grid for List and Chart [cite: 42] */
+/* Dashboard Grid */
 .dashboard-grid {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap; /* Responsive: Tumpuk di layar kecil [cite: 66] */
+    flex-wrap: wrap;
 }
 
 .list-card, .chart-card {
@@ -111,7 +113,7 @@ input, select {
     min-width: 350px;
 }
 
-/* Transaction List [cite: 30, 31] */
+/* List Styling */
 .scrollable-list {
     max-height: 400px;
     overflow-y: auto;
@@ -122,40 +124,29 @@ input, select {
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
-    border-bottom: 1px solid #f9f9f9;
-}
-
-.item-info b {
-    display: block;
-    font-size: 1rem;
-}
-
-.item-info .amount {
-    color: var(--primary-blue);
-    font-weight: bold;
-    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .category-badge {
     display: inline-block;
     padding: 2px 8px;
     font-size: 0.75rem;
-    background: #f0f0f0;
+    background: var(--border-color);
     border-radius: 4px;
-    color: #777;
+    color: var(--text-dark);
     margin-top: 4px;
 }
 
 .btn-delete {
     background: var(--danger-red);
-    color: var(--white);
+    color: white;
     border: none;
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
 }
 
-/* Chart Container [cite: 37] */
+/* Chart Container */
 .chart-container {
     position: relative;
     height: 300px;
